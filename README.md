@@ -6,7 +6,9 @@ n-flake.p6
 
 Generate an SVG n-flake to STDOUT.
 
-Takes 4 optional parameters: [--sides=<Int>] [--order=<Int>] [--radius=<Int>] [--color=<Str>]
+Takes 4 optional parameters:
+
+    [--sides=<Int>] [--order=<Int>] [--radius=<Int>] [--color=<Str>]
 
      --sides=n where <n> > 2. Default: 5.
 
@@ -33,21 +35,21 @@ You can specify various parameters too:
 
 will result in a 1000 x 1000 red fourth order hexaflake.
 
-   perl6 n-flake.p6 --sides=3 --order=0  > 3flake0.svg
-   perl6 n-flake.p6 --sides=3 --order=1  > 3flake1.svg
-   perl6 n-flake.p6 --sides=3 --order=2  > 3flake2.svg
-   perl6 n-flake.p6 --sides=3 --order=3  > 3flake3.svg
-   perl6 n-flake.p6 --sides=3 --order=4  > 3flake4.svg
-   perl6 n-flake.p6 --sides=3 --order=5  > 3flake5.svg
-   perl6 n-flake.p6 --sides=3 --order=6  > 3flake6.svg
-   perl6 n-flake.p6 --sides=3 --order=7  > 3flake7.svg
+    perl6 n-flake.p6 --sides=3 --order=0  > 3flake0.svg
+    perl6 n-flake.p6 --sides=3 --order=1  > 3flake1.svg
+    perl6 n-flake.p6 --sides=3 --order=2  > 3flake2.svg
+    perl6 n-flake.p6 --sides=3 --order=3  > 3flake3.svg
+    perl6 n-flake.p6 --sides=3 --order=4  > 3flake4.svg
+    perl6 n-flake.p6 --sides=3 --order=5  > 3flake5.svg
+    perl6 n-flake.p6 --sides=3 --order=6  > 3flake6.svg
+    perl6 n-flake.p6 --sides=3 --order=7  > 3flake7.svg
 
 to get a progression of Sierpinski triangles.
 
 ## A little exposition
 
 Since SVG files are theoretically infinitely scalable, you could pick any
-radius. It doesn't pay to choose on too small though. It will have minimal
+radius. It doesn't pay to choose one too small though. It will have minimal
 effect on the size of the generated file, a few bytes at most. Practically, most
 image viewing programs seem to be limited to 400%-1000% scaling so 600 x 600 is
 a good compromise allowing reasonable up and down resizing.
