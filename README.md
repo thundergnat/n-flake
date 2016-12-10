@@ -50,9 +50,17 @@ to get a progression of Sierpinski triangles.
 
 Since SVG files are theoretically infinitely scalable, you could pick any
 radius. It doesn't pay to choose one too small though. It will have minimal
-effect on the size of the generated file, a few bytes at most. Practically, most
-image viewing programs seem to be limited to 400%-1000% scaling so 600 x 600 is
-a good compromise allowing reasonable up and down resizing.
+effect on the size of the generated file, a few bytes at most, and could
+negatively affect the display accuracy since the node definitions are limited to
+2 decimal place precision. Practically, most image viewing programs seem to be
+limited to 400%-1000% scaling so 600 x 600 is a good compromise allowing
+reasonable up and down resizing.
+
+There are 147 predefined text SVG color names you can use, or, you can just
+supply a color in #xRGB format. E.G. red or #FF0000 are equivalent, as are gold
+and #FFD700.
+
+See http://www.december.com/html/spec/colorsvghex.html for predefined colors.
 
 You can't really make n-flakes with 1 or 2 sides. Those would be a point or a
 line respectively and the SVG routines used here won't support those without
@@ -65,7 +73,7 @@ n-flakes with sides 3, 5 and 6 are known as Sierpinski triangles, pentagons and
 hexagons respectively. The discerning factor is that the center space is the
 same size as one of the 1st order leaf nodes.
 
-Higher side count n-flakes have center spaces larger than than their 1st order
+Higher side count n-flakes have a center space larger than than their 1st order
 leaf nodes.
 
 You probable want to avoid generating n-flakes where $sides ** $order is greater
