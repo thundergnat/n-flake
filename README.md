@@ -16,6 +16,7 @@ Takes 4 optional parameters:
 
      --radius=r n-flake will be inscribed in a circle with radius <r>,
                 effectively 1/2 the height, width of the final image.
+                Default: 300
 
      --color=string Any color string accepted by SVG. Default: blue
 
