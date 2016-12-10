@@ -4,7 +4,7 @@ n-flake.p6
 
 ## USAGE
 
-Generate an SVG n-flake to STDOUT.
+Generate an SVG n-flake to STDOUT. Redirect into a file to capture / display it.
 
 Takes 4 optional parameters:
 
