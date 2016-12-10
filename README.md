@@ -55,7 +55,8 @@ image viewing programs seem to be limited to 400%-1000% scaling so 600 x 600 is
 a good compromise allowing reasonable up and down resizing.
 
 You can't really make n-flakes with 1 or 2 sides. Those would be a point or a
-line and the SVG routines I use here won't support those without special casing.
+line respectively and the SVG routines used here won't support those without
+special casing.
 
 A 4 sided n-flake is kind of a degenerate form. It is essentially just a solid
 filled square.
@@ -68,7 +69,7 @@ Higher side count n-flakes have center spaces larger than than their 1st order
 leaf nodes.
 
 You probable want to avoid generating n-flakes where $sides ** $order is greater
-that 1000. The files will get quite large and the details will be difficult to
+than 1000. The files will get quite large and the details will be difficult to
 see anyway.
 
 That being said, if you want to make a fifth order 64 sided n-flake, knock
