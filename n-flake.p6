@@ -14,7 +14,7 @@ sub MAIN ( Int :$sides where * > 2 = 5, Int :$order = 5,
 
     say svg-footer();
 
-    multi sub slices ( $sides, 0      ) { 0 xx $sides }
+    multi sub slices ( $sides, 0      ) { 0 }
     multi sub slices ( $sides, 1      ) { ^$sides }
     multi sub slices ( $sides, $order ) { [X] ^$sides xx $order }
 }
