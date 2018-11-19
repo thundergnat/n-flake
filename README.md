@@ -4,26 +4,27 @@ n-flake.p6
 
 ## USAGE
 
-Generate an SVG n-flake to STDOUT. Redirect into a file to capture / display it.
+Generate SVG n-flake to STDOUT. Takes 5 optional parameters.
 
-Takes 4 optional parameters:
+[--sides=<Int>] [--order=<Int>] [--radius=<Int>] [--color=<Str>] [--fname=<Str>]
 
-    [--sides=<Int>] [--order=<Int>] [--radius=<Int>] [--color=<Str>]
+ --s=n or --sides=n where n > 2. Default: 5.
 
-     --sides=n where <n> > 2. Default: 5.
+ --o=l or --order=l "levels of recursion" Default: 5.
 
-     --order=k "levels of recursion" Default: 5.
+ --r=r or --radius=r n-flake will be inscribed in a circle with radius <r>,
+                     effectively 1/2 the height, width of the final image.
+                     Default: 300
 
-     --radius=r n-flake will be inscribed in a circle with radius <r>,
-                effectively 1/2 the height, width of the final image.
-                Default: 300
+ --c=string or --color=string Any color string accepted by SVG. Default: blue
 
-     --color=string Any color string accepted by SVG. Default: blue
-
+ --f=string or --fname=string File name to save SVG file.
+                              Default: sierpinski-n-flake.svg
+                              where n is the number of sides.
 
 At a command prompt enter:
 
-    perl6 n-flake.p6 > n-flake.svg
+    perl6 n-flake.p6
 
 The defaults produce a 600 x 600 pixel blue 5th order pentaflake.
 (A Sierpinski pentagon)
@@ -32,18 +33,18 @@ Open with an image viewer or most modern web browsers.
 
 You can specify various parameters too:
 
-    perl6 n-flake.p6 --sides=6 --order=4 --color='red' --radius=500 > 6flake4.svg
+    perl6 n-flake.p6 --sides=6 --order=4 --color='red' --radius=400
 
-will result in a 1000 x 1000 red fourth order hexaflake.
+will result in a 800 x 800 red fourth order hexaflake.
 
-    perl6 n-flake.p6 --sides=3 --order=0  > 3flake0.svg
-    perl6 n-flake.p6 --sides=3 --order=1  > 3flake1.svg
-    perl6 n-flake.p6 --sides=3 --order=2  > 3flake2.svg
-    perl6 n-flake.p6 --sides=3 --order=3  > 3flake3.svg
-    perl6 n-flake.p6 --sides=3 --order=4  > 3flake4.svg
-    perl6 n-flake.p6 --sides=3 --order=5  > 3flake5.svg
-    perl6 n-flake.p6 --sides=3 --order=6  > 3flake6.svg
-    perl6 n-flake.p6 --sides=3 --order=7  > 3flake7.svg
+    perl6 n-flake.p6 --s=3 --o=0  --f=3flake0.svg
+    perl6 n-flake.p6 --s=3 --o=1  --f=3flake1.svg
+    perl6 n-flake.p6 --s=3 --o=2  --f=3flake2.svg
+    perl6 n-flake.p6 --s=3 --o=3  --f=3flake3.svg
+    perl6 n-flake.p6 --s=3 --o=4  --f=3flake4.svg
+    perl6 n-flake.p6 --s=3 --o=5  --f=3flake5.svg
+    perl6 n-flake.p6 --s=3 --o=6  --f=3flake6.svg
+    perl6 n-flake.p6 --s=3 --o=7  --f=3flake7.svg
 
 to get a progression of Sierpinski triangles.
 
@@ -67,8 +68,8 @@ You can't really make n-flakes with 1 or 2 sides. Those would be a point or a
 line respectively and the SVG routines used here won't support those without
 special casing.
 
-A 4 sided n-flake is kind of a degenerate form. It is essentially just a solid
-filled square.
+A 4 sided n-flake generated using this algorithm is kind of a degenerate form.
+It is essentially just a solid filled square.
 
 n-flakes with sides 3, 5 and 6 are known as Sierpinski triangles, pentagons and
 hexagons respectively. The discerning factor is that the center space is the

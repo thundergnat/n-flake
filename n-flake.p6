@@ -1,53 +1,52 @@
-sub MAIN ( Int :$sides where * > 2 = 5, Int :$order = 5,
-           Int :$radius = 300,          Str :$color = 'blue' ) {
+use SVG;
 
-    my $scale    = 1/2 / [+] (0, 1/$sides …^ * > 1/4).map: { cos(τ * $_) };
+sub MAIN ( Int :s(:$sides) where * > 2 = 5, Int :o(:$order) = 5,
+           Int :r(:$radius) = 300,          Str :c(:$color) = 'blue',
+           Str :f(:$fname)  = "{$order}-order-{$sides}-flake.svg" ) {
+
+    my $scale    = 1/2 / sum (0, 1/$sides …^ * > 1/4).map: { cos(τ * $_) };
     my @orders   = (1 - $scale) * $radius «*» $scale «**» (^$order);
-    my @vertices = (^$sides).map: { cis( τ * $_/$sides ) };
+    my @vertices = (^$sides).map: { cis( τ * $_/$sides - π/2 ) };
 
-    say svg-header( $radius*2, $radius*2, :fill($color) );
-
-    for slices( $order ) -> $slice {
-        my $vector = [+] @vertices[|$slice] «*» @orders;
-        say svg-polygon (($radius - @orders.sum) «*» @vertices «+» $vector)».reals».fmt("%.2f");
+    my @polygons =
+    slices($order).race(:batch(($sides**$order / 4).ceiling max 64)).map: -> $slice {
+        my $vector = sum @vertices[|$slice] «*» @orders;
+        :polygon[ 'points' => flat (($radius - @orders.sum) «*»
+                 @vertices «+» $vector)».reals».round(.01).map: |* »+» $radius ];
     };
 
-    say svg-footer();
-
-    multi slices ( 0      ) { 0 }
+    multi slices ( 0      ) { [0] }
     multi slices ( 1      ) { ^$sides }
     multi slices ( $order ) { [X] ^$sides xx $order }
+
+    my $fh = open($fname, :w) or die $fh;
+
+    $fh.print: SVG.serialize(
+        :svg[
+            width => $radius * 2, height => $radius * 2,
+            :style«stroke:$color», :fill«$color»,
+            |@polygons,
+        ],
+    )
 }
-
-sub svg-polygon ( @points ) { qq|<polygon points="{@points}" />| }
-
-sub svg-header ( $height, $width, :$transx = $height/2,
-                 :$transy = $width/2, :$fill, :$rotate = -90 ) {
-    qq:to/STOP/;
-        <?xml version="1.0" standalone="no"?>
-        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-          "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-        <svg height="$height" width="$width" style="fill:$fill"
-          transform="translate($transx,$transy) rotate($rotate)"
-          version="1.1" xmlns="http://www.w3.org/2000/svg">
-        STOP
-}
-
-sub svg-footer { '</svg>' };
 
 sub USAGE {
     note qq:to/STOP/;
-    Generate SVG n-flake to STDOUT. Takes 4 optional parameters
-    [--sides=<Int>] [--order=<Int>] [--radius=<Int>] [--color=<Str>]
+    Generate SVG n-flake to STDOUT. Takes 5 optional parameters
+    [--sides=<Int>] [--order=<Int>] [--radius=<Int>] [--color=<Str>] [--fname=<Str>]
 
-     --sides=n where <n> > 2. Default: 5.
+     --s=n or --sides=n where n > 2. Default: 5.
 
-     --order=k "levels of recursion" Default: 5.
+     --o=l or --order=l "levels of recursion" Default: 5.
 
-     --radius=r n-flake will be inscribed in a circle with radius <r>,
-                effectively 1/2 the height, width of the final image.
-                Default: 300
+     --r=r or --radius=r n-flake will be inscribed in a circle with radius <r>,
+                         effectively 1/2 the height, width of the final image.
+                         Default: 300
 
-     --color=string Any color string accepted by SVG. Default: blue
+     --c=string or --color=string Any color string accepted by SVG. Default: blue
+
+     --f=string or --fname=string File name to save SVG file.
+                                  Default: sierpinski-n-flake.svg
+                                  where n is the number of sides.
     STOP
 }
