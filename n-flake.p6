@@ -2,7 +2,7 @@ use SVG;
 
 sub MAIN ( Int :s(:$sides) where * > 2 = 5, Int :o(:$order) = 5,
            Int :r(:$radius) = 300,          Str :c(:$color) = 'blue',
-           Str :f(:$fname)  = "{$order}-order-{$sides}-flake.svg" ) {
+           Str :f(:$fname)  = "{$order.&nth}-order-{$sides}-flake.svg" ) {
 
     my $scale    = 1/2 / sum (0, 1/$sides …^ * > 1/4).map: { cos(τ * $_) };
     my @orders   = (1 - $scale) * $radius «*» $scale «**» (^$order);
@@ -11,8 +11,9 @@ sub MAIN ( Int :s(:$sides) where * > 2 = 5, Int :o(:$order) = 5,
     my @polygons =
     slices($order).race(:batch(($sides**$order / 4).ceiling max 64)).map: -> $slice {
         my $vector = sum @vertices[|$slice] «*» @orders;
-        :polygon[ 'points' => flat (($radius - @orders.sum) «*»
-                 @vertices «+» $vector)».reals».round(.01).map: |* »+» $radius ];
+        :polygon[ :points(flat (($radius - @orders.sum) «*»
+          @vertices «+» $vector)».reals».round(.01).map: |* »+» $radius),
+          :style("fill:$color") ]
     };
 
     multi slices ( 0      ) { [0] }
@@ -23,11 +24,16 @@ sub MAIN ( Int :s(:$sides) where * > 2 = 5, Int :o(:$order) = 5,
 
     $fh.print: SVG.serialize(
         :svg[
-            width => $radius * 2, height => $radius * 2,
-            :style«stroke:$color», :fill«$color»,
+            :width($radius * 2), :height($radius * 2),
+            :rect[:width<100%>, :height<100%>, :fill<white>],
             |@polygons,
         ],
     )
+}
+
+sub nth ($n) {
+    my %irr = <1 st 2 nd 3 rd 11 th 12 th 13 th>;
+    $n ~ (%irr{$n % 100} // %irr{$n % 10} // 'th')
 }
 
 sub USAGE {
