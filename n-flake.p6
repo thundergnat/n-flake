@@ -9,11 +9,10 @@ sub MAIN ( Int :s(:$sides) where * > 2 = 5, Int :o(:$order) = 5,
     my @vertices = (^$sides).map: { cis( τ * $_/$sides - π/2 ) };
 
     my @polygons =
-    slices($order).race(:batch(($sides**$order / 4).ceiling max 64)).map: -> $slice {
+    slices($order).race(:batch(($sides**$order / 4).ceiling min 64)).map: -> $slice {
         my $vector = sum @vertices[|$slice] «*» @orders;
         :polygon[ :points(flat (($radius - @orders.sum) «*»
-          @vertices «+» $vector)».reals».round(.01).map: |* »+» $radius),
-          :style("fill:$color") ]
+          @vertices «+» $vector)».reals».round(.01).map: |* »+» $radius) ]
     };
 
     multi slices ( 0      ) { [0] }
@@ -24,7 +23,7 @@ sub MAIN ( Int :s(:$sides) where * > 2 = 5, Int :o(:$order) = 5,
 
     $fh.print: SVG.serialize(
         :svg[
-            :width($radius * 2), :height($radius * 2),
+            :width($radius * 2), :height($radius * 2), :style("fill:$color")
             :rect[:width<100%>, :height<100%>, :fill<white>],
             |@polygons,
         ],
