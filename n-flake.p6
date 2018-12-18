@@ -35,7 +35,7 @@ sub nth ($n) {
 }
 
 sub USAGE {
-note qq:to/STOP/;
+note q:to/STOP/;
 Generate SVG n-flake to STDOUT. Takes 5 optional parameters
 [--sides=<Int>] [--order=<Int>] [--radius=<Int>] [--color=<Str>] [--fname=<Str>]
 
